@@ -1,0 +1,307 @@
+We need to create a web application that helps us manage the books in a library in terms of 
+1- we have a landing page contains all the books in our library (display title , cover photo, show button) and a button for creating new book
+2- all book details should be saved to postgres database 
+	(title, cover photo, number of pages, description
+3- when I click show button it redirect to new page displays book detailed information
+And have 2 buttons one for edit , and other for delete 
+Hints
+i want you to modify the project i already have to meet that 
+
+
+//base 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Food Blogs</title>
+        <!-- style bootstrap -->
+
+        <!-- <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        /> -->
+
+        <link
+            rel="stylesheet"
+            href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{url_for('static', filename='assets/css/style.css')}}"
+        />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('blogs.list') }}"
+                    >Food Blogs</a
+                >
+
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active"
+                                aria-current="page"
+                                href="{{ url_for('blogs.list') }}"
+                                >Blog</a
+                            >
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section>
+                <div class="">
+                    <div class="container py-5">
+                        <!--  -->
+                        {% block content %} {% endblock %}
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- script -->
+        <!-- <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script> -->
+
+        <script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+    </body>
+</html>
+
+
+//create page 
+{% extends './base.html' %}
+
+<!-- content -->
+{% block content %}
+<div>
+    <h1 style="text-align: center">Add new Blog</h1>
+</div>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">description</label>
+        <input type="text" class="form-control" name="description" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image</label>
+        <input type="text" name="image" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ url_for('blogs.list') }}" class="btn btn-info">Back</a>
+    </div>
+</form>
+{% endblock %}
+
+
+/list page 
+{% extends './base.html' %}
+
+<!-- content -->
+{% block content %}
+
+<div class="mb-3">
+    <a href="{{ url_for('blogs.create')}}" class="btn btn-primary"
+        >Add New blog</a
+    >
+</div>
+
+<h2>All Blogs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Show</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for blog in blogs %}
+        <tr>
+            <td>{{blog.id}}</td>
+            <td>{{blog.name}}</td>
+            <td>{{blog.description }}</td>
+            <td>{{blog.image}}</td>
+            <td>
+                <!--
+                    <a
+                    href="{{url_for('blogs.show', id=blog.id)}}"
+                    class="btn btn-info"
+                    >Show</a
+                    >
+                -->
+                <a href="{{blog.show_url}}" class="btn btn-info">Show</a>
+            </td>
+            <td>
+                <!--
+                <a
+                    href="{{url_for('blogs.update', id=blog.id)}}"
+                    class="btn btn-success"
+                    >Update</a
+                >
+                -->
+                <a href="{{blog.update_url}}" class="btn btn-success">Update</a>
+            </td>
+            <td>
+                <form action="{{ blog.delete_url }}" method="POST">
+                    <input
+                        type="submit"
+                        value="Delete"
+                        class="btn btn-danger"
+                    />
+                </form>
+
+                <!--
+                    <a
+                    href="{{url_for('blogs.delete', id=blog.id)}}"
+                    class="btn btn-danger"
+                    >Delete</a
+                    >
+                -->
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+//show page
+{% extends './base.html' %}
+
+<!-- content -->
+{% block content %}
+
+<div class="mb-3 d-flex justify-content-between">
+    <h2 class="">Blog Info</h2>
+
+    <a href="{{ url_for('blogs.list') }}" class="btn btn-primary"
+        >Back to all Blogs</a
+    >
+</div>
+
+<div class="card">
+    <div class="row">
+        <div class="col-5">
+            <div class="h-100">
+                <img
+                    src="{{ blog.image_url }}"
+                    class="card-img-top w-100 h-100 object-cover"
+                    alt="{{ blog.name }}"
+                />
+            </div>
+        </div>
+
+        <div class="col-7">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <strong class="text-capitalize">Name: </strong>
+                    {{blog.name}}
+                </h5>
+                <p>
+                    <strong class="text-capitalize">Image: </strong>
+                    {{blog.image_url}}
+                </p>
+
+                <p class="card-text">
+                    <strong class="text-capitalize">description: </strong>
+                    {{blog.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+//update page
+{% extends './base.html' %}
+
+<!-- content -->
+{% block content %}
+<div>
+    <h1 style="text-align: center">Update Blog</h1>
+</div>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input
+            type="text"
+            name="name"
+            class="form-control"
+            value="{{blog.name}}"
+        />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">description</label>
+        <input
+            type="text"
+            class="form-control"
+            name="description"
+            value="{{blog.description}}"
+        />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image</label>
+        <input
+            type="text"
+            name="image"
+            class="form-control"
+            value="{{blog.image}}"
+        />
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ url_for('blogs.list') }}" class="btn btn-info">Back</a>
+    </div>
+</form>
+{% endblock %}

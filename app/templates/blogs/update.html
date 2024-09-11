@@ -1,0 +1,34 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div>
+    <h1 style="text-align: center">Update Book</h1>
+</div>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" name="title" class="form-control" value="{{ book.title }}" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Cover Photo URL</label>
+        <input type="text" name="cover_photo" class="form-control" value="{{ book.cover_photo }}" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Number of Pages</label>
+        <input type="number" name="num_pages" class="form-control" value="{{ book.num_pages }}" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control">{{ book.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ url_for('list_books') }}" class="btn btn-info">Back</a>
+    </div>
+</form>
+{% endblock %}

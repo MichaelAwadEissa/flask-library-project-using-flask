@@ -1,0 +1,95 @@
+
+# ubuntu
+virtualenv venv
+source venv/bin/activate 
+
+
+# create virtual env  windows
+virtualenv wvenv
+wvenv\Scripts\activate
+
+
+
+# intall packages 
+pip install flask 
+pip install flask-shell-ipython
+pip install -U Flask-SQLAlchemy
+pip install Flask-Migrate
+pip install psycopg2
+pip install psycopg2-binary
+
+
+
+
+# create project
+0- create folder app 
+1- __init__.py -> (config SQLAlchemy - migrate - apps)
+2- models.py -> (columns SQLAlchemy)
+3- config.py -> (config db -> Development or Production)
+4- lab2.py -> app run (config db - run app)
+4.1- run postgres
+4.2- run flask db init
+5- edit model -> after -> flask db init
+    --> run -> db init -> before -> db.init_app(app)
+6- create folder blogs 
+    -> __init__.py
+        -> blueprint
+    -> views.py 
+        -> action
+7- directory -> templates 
+    -> base + index 
+8- edit __init__.py > app -> app.register
+
+
+
+
+# run project 
+cd app 
+export FLASK_APP=lab2
+flask run --debug 
+
+
+
+# run shell 
+export FLASK_APP=lab2
+flask shell 
+
+
+# postgres
+su - postgres 
+mazen@@1
+psql
+
+
+create user fayoum with password 'iti';
+
+alter user fayoum superuser;
+alter user fayoum createdb;
+
+
+psql -U fayoum -h localhost -p5432 -W -d postgres 
+iti
+
+create database iti_flask_lab2;
+
+
+
+# create db 
+flask db init 
+flask db migrate -m 'create lab2 db'
+flask db upgrade 
+
+
+
+
+
+# ubuntu 
+pip freeze > requirements.txt 
+pip install -r requirements.txt
+
+
+
+
+# windows 
+pip freeze > wrequirements.txt 
+pip install -r wrequirements.txt
