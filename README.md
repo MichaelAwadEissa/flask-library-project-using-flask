@@ -1,5 +1,2 @@
-# Mazen Saad
+# Michael
 
-## ITI Flask Lab2
-
-### Q1 :-
