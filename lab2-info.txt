@@ -78,7 +78,7 @@ create database iti_flask_lab2;
 
 # create db 
 flask db init 
-flask db migrate -m 'create lab2 db'
+flask db migrate -m 'create '
 flask db upgrade 
 
 
