@@ -1,26 +1,39 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap5
+
 from flask_migrate import Migrate
-from app.models import db
+
+from app.model import db
 from app.config import config_options
 
 
 def create_app(config_name="prd"):
-    app = Flask(__name__)
 
+    app = Flask(__name__)
     current_config = config_options[config_name]
     app.config.from_object(current_config)
     app.config.SQLALCHEMY_DATABASE_URI = current_config.SQLALCHEMY_DATABASE_URI
 
+
     db.init_app(app)
     migrate = Migrate(app, db)
+    bootstrap = Bootstrap5(app)
 
-    # apps
+    # app 
+    from app.books import books_blueprint
 
-    # -1 -> blogs
-    from app.blogs import blogs_blueprint
+    app.register_blueprint(books_blueprint)
 
-    app.register_blueprint(blogs_blueprint)
+    # -2 -> Home
+    from app.home import home_blueprint
 
-    # -2 ->
+    app.register_blueprint(home_blueprint)
+
 
     return app
+
+
+
+
+

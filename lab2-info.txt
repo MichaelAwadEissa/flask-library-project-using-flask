@@ -15,7 +15,6 @@ pip install flask
 pip install flask-shell-ipython
 pip install -U Flask-SQLAlchemy
 pip install Flask-Migrate
-pip install psycopg2
 pip install psycopg2-binary
 
 
@@ -60,6 +59,9 @@ su - postgres
 mazen@@1
 psql
 
+
+\du     list users    :q end 
+\l    list db
 
 create user fayoum with password 'iti';
 
